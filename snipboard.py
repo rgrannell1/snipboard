@@ -35,35 +35,28 @@ is_python3 = sys.version_info[0] > 2
 # -- A wrapper for constructing sublime-texts XML snippets
 # -- from a snippet body, tabtrigger, scope and description.
 
-def Snippet (s_content, s_trigger, s_scope = None, s_description = None):
-
-	def tag (name):
-		return lambda content: '<' + name + '>' + content + '</' + name + '>\n'
-
-	snippet     = tag('snippet')
-
-	cdata       = lambda content: '<![CDATA[' + content + ']]>'
-	content     = tag('content')
-	trigger     = tag('tagTrigger')
-	scope       = tag('scope')
-	description = tag('description')
-
-	text = content(cdata(s_content)) + trigger(s_trigger)
+def Snippet (s_content, s_trigger, s_scope = None):
 
 	if s_scope and s_scope is not '*':
-		if s_description:
-			return snippet(
-				text + scope(s_scope) + description(s_description))
-		else:
-			return snippet(
-				text + scope(s_scope))
-	else:
-		if s_description:
-			return snippet(
-				text + description(s_description))
-		else:
-			return snippet(text)
+		template = '''
+			<snippet>
+				<content><![CDATA[{0}]]></content>
+				<tabTrigger>{1}</tabTrigger>
+				<scope>{2}</scope>
+			</snippet>
+			'''
 
+		return template.format(s_content, s_trigger, s_scope)
+
+	else:
+		template = '''
+			<snippet>
+				<content><![CDATA[{0}]]></content>
+				<tabTrigger>{1}</tabTrigger>
+			</snippet>
+			'''
+
+		return template.format(s_content, s_trigger)
 
 
 
@@ -201,7 +194,7 @@ def compile_snippet (snippet):
 def write_to_snipboard (content):
 
 	fpaths = {
-		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
+		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/User/snipboard.sublime-snippet')
 	}
 
 	platform_name = sys.platform
@@ -211,6 +204,8 @@ def write_to_snipboard (content):
 	except IOError:
 		raise IOError('-- snipboard: could not open ' + fpaths[platform_name])
 	else:
+		print('-- snipboard: writing to ' + fpaths[platform_name])
+
 		file.write(content)
 		file.close()
 
