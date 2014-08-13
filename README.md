@@ -1,7 +1,14 @@
 Snipboard v0.1.0
 ================
 
+Snipboard is a Sublime Text plugin
+
+
+
+
 ## Installation
+
+You can install snipboard .
 
 ### Ubuntu / Linux
 
@@ -20,7 +27,25 @@ git clone https://github.com/rgrannell1/snipboard.git
 
 ### OSX
 
+```bash
+cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages
+git clone https://github.com/rgrannell1/snipboard.git
+```
+
+To upgrade run
+
+```bash
+cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages
+rm -rf snipboard
+git clone https://github.com/rgrannell1/snipboard.git
+```
+
 ### Windows
+
+```bash
+cd "%AppData%\Sublime Text 3\Packages\User"
+git clone https://github.com/rgrannell1/snipboard.git
+```
 
 ## Shortcuts
 
