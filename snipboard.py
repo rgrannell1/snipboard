@@ -268,3 +268,11 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 			write_to_snipboard(xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
+
+
+
+
+
+for ($1 in 1:$2) {
+	print($1)
+}

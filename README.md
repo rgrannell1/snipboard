@@ -1,14 +1,25 @@
 Snipboard v0.1.0
 ================
 
-Snipboard is a Sublime Text plugin
+Snipboard adds light snippets to Sublime Text.
 
+* You have to leave your code to write snippets.
+* You have to write XML boilerplate.
+* This discourages you from writing one-off snippets.
 
-
+<img src="example.gif"></img>
 
 ## Installation
 
-You can install snipboard .
+You can install Snipboard in several ways. The easiest is by installing [Sublime Package Manager](https://sublime.wbond.net/installation)
+and then:
+
+* 1, Press <kbd>Ctrl + Shift + p</kbd>, and navigate to 'add repository'
+* 2, Drop the URL for this package - https://github.com/rgrannell1/snipboard - into the text field.
+* 3, Now press <kbd>Ctrl + Shift + p</kbd>, navigate to 'install package', and type 'snipboard'.
+
+Using this method is preferable as you will automatically recieve updates. These
+followind methods will also work if you don't use Sublime Package Manager.
 
 ### Ubuntu / Linux
 
