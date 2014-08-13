@@ -1,6 +1,31 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python 3
 
+import os
+import sublime
+import sublime_plugin
+import random
 import re
+import sys
+
+__version__ = '0.1.0'
+__authors__ = ['Ryan Grannell (@RyanGrannell)']
+
+is_python3 = sys.version_info[0] > 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # -- Snippet
 #
@@ -158,10 +183,28 @@ def compile_snippet (snippet):
 
 
 
+
 test = "> t s.rstats snip\n" + \
 	"$1 this is a $2 snippet."
 
-
-
-
 compile_snippet(test)
+#"~/.config/sublime-text-3/Packages/snipboard/$$.sublime-snippet"
+
+
+
+
+
+
+
+
+
+
+
+# -- SnipboardCommand
+#
+#
+
+class SnipboardCommand (sublime_plugin.WindowCommand):
+
+	def run (self):
+		1
