@@ -234,8 +234,8 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 		# -- get text from the first selection.
 		select_text = view.substr(sel[0])
 
-		print(select_text)
-
-		xml         = compile_snippet(select_text)
-
-		write_to_snipboard(xml)
+		if select_text:
+			xml         = compile_snippet(select_text)
+			write_to_snipboard(xml)
+		else:
+			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
