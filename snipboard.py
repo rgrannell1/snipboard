@@ -35,34 +35,56 @@ is_python3 = sys.version_info[0] > 2
 # -- A wrapper for constructing sublime-texts XML snippets
 # -- from a snippet body, tabtrigger, scope and description.
 
-def Snippet (s_content, s_trigger, s_scope = None):
+def Snippet (content, trigger = None, scope = None):
 
-	if s_scope and s_scope is not '*':
+	if scope and scope is not '*':
+		if trigger:
 
-		template = '''
-			<snippet>
-				<content><![CDATA[{0}]]></content>
-				<tabTrigger>{1}</tabTrigger>
-				<scope>{2}</scope>
-			</snippet>
-			'''
+			template = '''
+				<snippet>
+					<content><![CDATA[{0}]]></content>
+					<tabTrigger>{1}</tabTrigger>
+					<scope>{2}</scope>
+				</snippet>
+				'''
 
-		return template.format(s_content, s_trigger, s_scope)
+			return template.format(content, trigger, scope)
+
+		else:
+
+			template = '''
+				<snippet>
+					<content><![CDATA[{0}]]></content>
+					<scope>{1}</scope>
+					<tabTrigger>$$</tabTrigger>
+				</snippet>
+				'''
+
+			return template.format(content, scope)
 
 	else:
 
-		template = '''
-			<snippet>
-				<content><![CDATA[{0}]]></content>
-				<tabTrigger>{1}</tabTrigger>
-			</snippet>
-			'''
+		if trigger:
 
-		return template.format(s_content, s_trigger)
+			template = '''
+				<snippet>
+					<content><![CDATA[{0}]]></content>
+					<tabTrigger>{1}</tabTrigger>
+				</snippet>
+				'''
 
+			return template.format(content, trigger)
 
+		else:
 
+			template = '''
+				<snippet>
+					<content><![CDATA[{0}]]></content>
+					<tabTrigger>$$</tabTrigger>
+				</snippet>
+				'''
 
+			return template.format(content)
 
 # -- parse_args
 #
@@ -85,7 +107,7 @@ def parse_args (line):
 		space_rexp + lang_rexp + space_rexp + trigger_rexp)
 
 	if valid_args_rexp.search(line) is None:
-		print("--snipboard: could not match " + line + " as snippet arguments.")
+		print("-- snipboard: could not match " + line + " as snippet arguments.")
 	else:
 
 		blocks = re.split(space_rexp, line, 3)
@@ -175,7 +197,6 @@ def compile_body (body):
 
 def compile_snippet (snippet):
 
-
 	if snippet.startswith('>'):
 		# -- snippet includes additional arguments on the first line.
 
@@ -185,11 +206,15 @@ def compile_snippet (snippet):
 		args = compile_args(parse_args(snippet_args))
 		body = compile_body(snippet_body)
 
-		return Snippet(snippet_body, args['trigger'], args['language'])
+		return Snippet(body, args['trigger'], args['language'])
+
 	else:
 		# -- snippet does not include additional arguments; use defaults.
 
+		snippet_body = snippet
+		body         = compile_body(snippet_body)
 
+		return Snippet(body)
 
 
 
@@ -243,5 +268,3 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 			write_to_snipboard(xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
-
-
