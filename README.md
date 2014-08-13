@@ -28,7 +28,7 @@ git clone https://github.com/rgrannell1/snipboard.git
 
 ## License
 
-Babel is released under the MIT licence.
+Snipboard is released under the MIT licence.
 
 The MIT License (MIT)
 
