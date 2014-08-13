@@ -47,7 +47,7 @@ def Snippet (s_content, s_trigger, s_scope = None, s_description = None):
 
 	text = content(cdata(s_content)) + trigger(s_trigger)
 
-	if s_scope:
+	if s_scope and s_scope is not '*':
 		if s_description:
 			return snippet(
 				text + scope(s_scope) + description(s_description))
@@ -76,7 +76,7 @@ def parse_args (line):
 	prompt          = '>'
 	space_rexp      = '[ 	]+'
 	storage_rexp    = '(t|p)'
-	lang_rexp       = '([st]\.[^ 	]+)'
+	lang_rexp       = '[*]|([st]\.[^ 	]+)'
 	trigger_rexp    = '.+'
 
 	valid_args_rexp = re.compile(prompt + space_rexp + storage_rexp + \
@@ -152,6 +152,10 @@ constants = (
 	['$tabsize',  '$TM_TAB_SIZE'],
 )
 
+
+
+
+
 # -- compile_body
 #
 # -- compile .
@@ -180,19 +184,25 @@ def compile_snippet (snippet):
 
 	return Snippet(snippet_body, args['trigger'], args['language'])
 
+
+
+
+
 # -- write_to_snipboard
 #
 # -- write the sublime text snippet to a file.
 
 def write_to_snipboard (content):
 
-	fpath = os.path.expanduser("~/.config/sublime-text-3/Packages/snipboard/$$.sublime-snippet")
+	fpath = os.path.expanduser("~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet")
 
-	print(fpath)
-
-	file = open(fpath, "w")
-	file.write(content)
-	file.close()
+	try:
+		file = open(fpath, "w")
+	except IOError:
+		print '--snipboard: could not open ' + fpath
+	else:
+		file.write(content)
+		file.close()
 
 
 
@@ -206,7 +216,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 
 	def run (self):
 
-		print('snipboard running.')
+		print('snipboard initialised.')
 
 		window = self.window
 		view   = window.active_view()
