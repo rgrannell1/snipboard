@@ -2,7 +2,12 @@
 
 import re
 
-rules = (
+# -- constants
+#
+# -- shorthand replacements for existing sublime-text
+# -- snippets.
+
+constants = (
 	['$s',  '$SELECTION'],
 	['$l',  '$TM_CURRENT_LINE'],
 	['$w',  '$TM_CURRENT_WORD'],
@@ -26,11 +31,12 @@ rules = (
 
 
 
-
+# -- Snippet
+#
+# -- A wrapper for constructing sublime-texts XML snippets
+# -- from a snippet body, tabtrigger, scope and description.
 
 def Snippet (s_content, s_trigger, s_scope = None, s_description = None):
-	# -- generate an XML snippet from its parts.
-	#
 
 	def tag (name):
 		return lambda content: '<' + name + '>' + content + '</' + name + '>\n'
@@ -65,7 +71,7 @@ def Snippet (s_content, s_trigger, s_scope = None, s_description = None):
 
 
 def parse_args (line):
-	# -- parse expressions of the form
+	# -- lex and parse expressions of the form
 	# -- > (ps|ts) [scope] [tab-trigger]
 
 	# -- combine the following into the following large regexp:
@@ -95,11 +101,11 @@ def parse_args (line):
 
 
 
+# -- compile_snippet
+#
+# -- compile a snipboard snippet into an XML sublime text snippet.
 
-
-def parse_snippet (snippet):
-	# --
-	# --
+def compile_snippet (snippet):
 
 	snippet_args = snippet.split('\n')   [0]
 	snippet_body = snippet.split('\n', 1)[1]
@@ -113,13 +119,14 @@ def parse_snippet (snippet):
 
 
 
+
+
 # -- compile_args
 #
-#
+# -- compile the arguments passed to a snipboard snippet to
+# -- a form useable by normal sublime snippets.
 
 def compile_args (args):
-	# -- compile
-	# --
 
 	language = args['language']
 	storage  = args['storage']
@@ -131,7 +138,11 @@ def compile_args (args):
 	language = re.sub('^s\.', 'source.', language)
 	language = re.sub('^t\.', 'text.',   language)
 
-	return(args)
+	return {
+		'storage' : storage,
+		'language': language,
+		'trigger' : trigger
+	}
 
 
 
@@ -141,5 +152,5 @@ test = "> t s.rstats snip\n" + "snippet-contents"
 
 
 
-parse_snippet(test)
+compile_snippet(test)
 
