@@ -67,7 +67,9 @@ def Snippet (s_content, s_trigger, s_scope = None, s_description = None):
 
 
 
-
+# -- parse_args
+#
+# -- parse the snippets argument line.
 
 def parse_args (line):
 	# -- lex and parse expressions of the form
@@ -180,7 +182,7 @@ def compile_snippet (snippet):
 	snippet_body = snippet.split('\n', 1)[1]
 
 	if not snippet.startswith('>'):
-		raise ('-- snipboard: syntax error, snippet did not start with >.')
+		raise SyntaxError('-- snipboard: syntax error, snippet did not start with >.')
 	else:
 
 		args = compile_args(parse_args(snippet_args))
@@ -207,7 +209,7 @@ def write_to_snipboard (content):
 	try:
 		file = open(fpaths[platform_name], "w")
 	except IOError:
-		raise ('-- snipboard: could not open ' + fpaths[platform_name])
+		raise IOError('-- snipboard: could not open ' + fpaths[platform_name])
 	else:
 		file.write(content)
 		file.close()
@@ -224,7 +226,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 
 	def run (self):
 
-		raise ('-- snipboard: initialised.')
+		print('-- snipboard: initialised.')
 
 		window = self.window
 		view   = window.active_view()
