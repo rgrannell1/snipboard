@@ -175,17 +175,21 @@ def compile_body (body):
 
 def compile_snippet (snippet):
 
-	snippet_args = snippet.split('\n')   [0]
-	snippet_body = snippet.split('\n', 1)[1]
 
-	if not snippet.startswith('>'):
-		raise SyntaxError('-- snipboard: syntax error, snippet did not start with >.')
-	else:
+	if snippet.startswith('>'):
+		# -- snippet includes additional arguments on the first line.
+
+		snippet_args = snippet.split('\n')   [0]
+		snippet_body = snippet.split('\n', 1)[1]
 
 		args = compile_args(parse_args(snippet_args))
 		body = compile_body(snippet_body)
 
 		return Snippet(snippet_body, args['trigger'], args['language'])
+	else:
+		# -- snippet does not include additional arguments; use defaults.
+
+
 
 
 
@@ -239,3 +243,5 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 			write_to_snipboard(xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
+
+
