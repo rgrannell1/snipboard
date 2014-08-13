@@ -29,6 +29,8 @@ rules = (
 
 
 def Snippet (s_content, s_trigger, s_scope = None, s_description = None):
+	# -- generate an XML snippet from its parts.
+	#
 
 	def tag (name):
 		return lambda content: '<' + name + '>' + content + '</' + name + '>\n'
@@ -75,7 +77,6 @@ def parse_args (line):
 	lang_rexp       = '([st]\.[^ 	]+)'
 	trigger_rexp    = '.+'
 
-
 	valid_args_rexp = re.compile(prompt + space_rexp + storage_rexp + \
 		space_rexp + lang_rexp + space_rexp + trigger_rexp)
 
@@ -97,24 +98,48 @@ def parse_args (line):
 
 
 def parse_snippet (snippet):
-
-	print(snippet)
-
-
-
-
-
-def compile_args (args):
+	# --
 	# --
 
-	print(args)
+	snippet_args = snippet.split('\n')   [0]
+	snippet_body = snippet.split('\n', 1)[1]
+
+	if snippet.startswith('>'):
+		args     = compile_args(parse_args(snippet_args))
+	else:
+		raise SyntaxError("snippet arguments missing.")
+
+	xml_snippet  = Snippet(snippet_body, args['trigger'])
+
+
+
+# -- compile_args
+#
+#
+
+def compile_args (args):
+	# -- compile
+	# --
+
+	language = args['language']
+	storage  = args['storage']
+	trigger  = args['trigger']
+
+	# -- compile s.lang -> source.lang,
+	# -- compile t.lang -> text   .lang
+
+	language = re.sub('^s\.', 'source.', language)
+	language = re.sub('^t\.', 'text.',   language)
+
+	return(args)
 
 
 
 
+test = "> t s.rstats snip\n" + "snippet-contents"
 
 
-Snippet('CONTENTS', 'TRIGGER')
 
-print(compile_args(parse_args('> t	t.rstats   thasdasd asd asddsa ')))
+
+parse_snippet(test)
 
