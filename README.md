@@ -5,6 +5,19 @@ Snipboard v0.1.0
 
 ### Ubuntu / Linux
 
+```bash
+cd ~/.config/sublime-text-3/Packages
+git clone https://github.com/rgrannell1/snipboard.git
+```
+
+To upgrade run
+
+```bash
+cd ~/.config/sublime-text-3/Packages
+rm -rf snipboard
+git clone https://github.com/rgrannell1/snipboard.git
+```
+
 ### OSX
 
 ### Windows
