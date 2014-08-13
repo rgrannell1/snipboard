@@ -3,9 +3,12 @@
 import os
 import sublime
 import sublime_plugin
-import random
 import re
 import sys
+
+
+
+
 
 __version__ = '0.1.0'
 __authors__ = ['Ryan Grannell (@RyanGrannell)']
@@ -194,12 +197,16 @@ def compile_snippet (snippet):
 
 def write_to_snipboard (content):
 
-	fpath = os.path.expanduser("~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet")
+	fpaths = {
+		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
+	}
+
+	platform_name = sys.platform
 
 	try:
-		file = open(fpath, "w")
+		file = open(fpaths[platform_name], "w")
 	except IOError:
-		print '--snipboard: could not open ' + fpath
+		print('-- snipboard: could not open ' + fpaths[platform_name])
 	else:
 		file.write(content)
 		file.close()
@@ -216,7 +223,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 
 	def run (self):
 
-		print('snipboard initialised.')
+		print('-- snipboard: initialised.')
 
 		window = self.window
 		view   = window.active_view()
