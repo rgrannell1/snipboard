@@ -86,7 +86,7 @@ def parse_args (line):
 		space_rexp + lang_rexp + space_rexp + trigger_rexp)
 
 	if valid_args_rexp.search(line) is None:
-		raise SyntaxError("could not match " + line + " as snippet arguments.")
+		print("--snipboard: could not match " + line + " as snippet arguments.")
 	else:
 
 		blocks = re.split(space_rexp, line, 3)
@@ -180,12 +180,13 @@ def compile_snippet (snippet):
 	snippet_body = snippet.split('\n', 1)[1]
 
 	if not snippet.startswith('>'):
-		raise SyntaxError("snippet arguments missing.")
+		raise ('-- snipboard: syntax error, snippet did not start with >.')
+	else:
 
-	args = compile_args(parse_args(snippet_args))
-	body = compile_body(snippet_body)
+		args = compile_args(parse_args(snippet_args))
+		body = compile_body(snippet_body)
 
-	return Snippet(snippet_body, args['trigger'], args['language'])
+		return Snippet(snippet_body, args['trigger'], args['language'])
 
 
 
@@ -206,7 +207,7 @@ def write_to_snipboard (content):
 	try:
 		file = open(fpaths[platform_name], "w")
 	except IOError:
-		print('-- snipboard: could not open ' + fpaths[platform_name])
+		raise ('-- snipboard: could not open ' + fpaths[platform_name])
 	else:
 		file.write(content)
 		file.close()
@@ -223,7 +224,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 
 	def run (self):
 
-		print('-- snipboard: initialised.')
+		raise ('-- snipboard: initialised.')
 
 		window = self.window
 		view   = window.active_view()
