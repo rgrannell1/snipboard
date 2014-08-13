@@ -2,35 +2,6 @@
 
 import re
 
-# -- constants
-#
-# -- shorthand replacements for existing sublime-text
-# -- snippets.
-
-constants = (
-	['$s',  '$SELECTION'],
-	['$l',  '$TM_CURRENT_LINE'],
-	['$w',  '$TM_CURRENT_WORD'],
-	['$fn', '$TM_FILENAME'],
-	['$fp', '$TM_FILEPATH'],
-	['$li', '$TM_LINE_INDEX'],
-	['$ln', '$TM_LINE_NUMBER'],
-	['$st', '$TM_SOFT_TABS'],
-	['$ts', '$TM_TAB_SIZE'],
-
-	['$text',     '$SELECTION'],
-	['$line',     '$TM_CURRENT_LINE'],
-	['$word',     '$TM_CURRENT_WORD'],
-	['$filename', '$TM_FILENAME'],
-	['$filepath', '$TM_FILEPATH'],
-	['$lineind',  '$TM_LINE_INDEX'],
-	['$linenum',  '$TM_LINE_NUMBER'],
-	['$softtab',  '$TM_SOFT_TABS'],
-	['$tabsize',  '$TM_TAB_SIZE'],
-)
-
-
-
 # -- Snippet
 #
 # -- A wrapper for constructing sublime-texts XML snippets
@@ -101,25 +72,6 @@ def parse_args (line):
 
 
 
-# -- compile_snippet
-#
-# -- compile a snipboard snippet into an XML sublime text snippet.
-
-def compile_snippet (snippet):
-
-	snippet_args = snippet.split('\n')   [0]
-	snippet_body = snippet.split('\n', 1)[1]
-
-	if snippet.startswith('>'):
-		args     = compile_args(parse_args(snippet_args))
-	else:
-		raise SyntaxError("snippet arguments missing.")
-
-	xml_snippet  = Snippet(snippet_body, args['trigger'])
-
-
-
-
 
 # -- compile_args
 #
@@ -147,10 +99,69 @@ def compile_args (args):
 
 
 
-test = "> t s.rstats snip\n" + "snippet-contents"
+
+# -- constants
+#
+# -- shorthand replacements for existing sublime-text
+# -- snippets.
+
+constants = (
+	['$s',  '$SELECTION'],
+	['$l',  '$TM_CURRENT_LINE'],
+	['$w',  '$TM_CURRENT_WORD'],
+	['$fn', '$TM_FILENAME'],
+	['$fp', '$TM_FILEPATH'],
+	['$li', '$TM_LINE_INDEX'],
+	['$ln', '$TM_LINE_NUMBER'],
+	['$st', '$TM_SOFT_TABS'],
+	['$ts', '$TM_TAB_SIZE'],
+
+	['$text',     '$SELECTION'],
+	['$line',     '$TM_CURRENT_LINE'],
+	['$word',     '$TM_CURRENT_WORD'],
+	['$filename', '$TM_FILENAME'],
+	['$filepath', '$TM_FILEPATH'],
+	['$lineind',  '$TM_LINE_INDEX'],
+	['$linenum',  '$TM_LINE_NUMBER'],
+	['$softtab',  '$TM_SOFT_TABS'],
+	['$tabsize',  '$TM_TAB_SIZE'],
+)
+
+# -- compile_body
+#
+# -- compile .
+
+def compile_body (body):
+	return body
+
+
+
+
+
+# -- compile_snippet
+#
+# -- compile a snipboard snippet into an XML sublime text snippet.
+
+def compile_snippet (snippet):
+
+	snippet_args = snippet.split('\n')   [0]
+	snippet_body = snippet.split('\n', 1)[1]
+
+	if not snippet.startswith('>'):
+		raise SyntaxError("snippet arguments missing.")
+
+	args = compile_args(parse_args(snippet_args))
+	body = compile_body(snippet_body)
+
+	return Snippet(snippet_body, args['trigger'], args['language'])
+
+
+
+
+test = "> t s.rstats snip\n" + \
+	"$1 this is a $2 snippet."
 
 
 
 
 compile_snippet(test)
-
