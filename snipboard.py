@@ -199,7 +199,6 @@ compile_snippet(test)
 
 
 
-
 # -- SnipboardCommand
 #
 #
@@ -207,4 +206,11 @@ compile_snippet(test)
 class SnipboardCommand (sublime_plugin.WindowCommand):
 
 	def run (self):
-		1
+
+		window = self.window
+		view = window.active_view()
+		sel = view.sel()
+
+		select_text = view.substr(sel[0])
+
+		print(select_text)
