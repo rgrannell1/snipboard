@@ -180,20 +180,19 @@ def compile_snippet (snippet):
 
 	return Snippet(snippet_body, args['trigger'], args['language'])
 
+# -- write_to_snipboard
+#
+# -- write the sublime text snippet to a file.
 
+def write_to_snipboard (content):
 
+	fpath = os.path.expanduser("~/.config/sublime-text-3/Packages/snipboard/$$.sublime-snippet")
 
+	print(fpath)
 
-test = "> t s.rstats snip\n" + \
-	"$1 this is a $2 snippet."
-
-compile_snippet(test)
-#"~/.config/sublime-text-3/Packages/snipboard/$$.sublime-snippet"
-
-
-
-
-
+	file = open(fpath, "w")
+	file.write(content)
+	file.close()
 
 
 
@@ -201,16 +200,20 @@ compile_snippet(test)
 
 # -- SnipboardCommand
 #
-#
+# -- The interface to snipboard for SublimeText.
 
 class SnipboardCommand (sublime_plugin.WindowCommand):
 
 	def run (self):
 
+		print('snipboard running.')
+
 		window = self.window
-		view = window.active_view()
-		sel = view.sel()
+		view   = window.active_view()
+		sel    = view.sel()
 
+		# -- get text from the first selection.
 		select_text = view.substr(sel[0])
+		xml         = compile_snippet(select_text)
 
-		print(select_text)
+		write_to_snipboard(xml)
