@@ -38,6 +38,7 @@ is_python3 = sys.version_info[0] > 2
 def Snippet (s_content, s_trigger, s_scope = None):
 
 	if s_scope and s_scope is not '*':
+
 		template = '''
 			<snippet>
 				<content><![CDATA[{0}]]></content>
@@ -49,6 +50,7 @@ def Snippet (s_content, s_trigger, s_scope = None):
 		return template.format(s_content, s_trigger, s_scope)
 
 	else:
+
 		template = '''
 			<snippet>
 				<content><![CDATA[{0}]]></content>
@@ -57,6 +59,8 @@ def Snippet (s_content, s_trigger, s_scope = None):
 			'''
 
 		return template.format(s_content, s_trigger)
+
+
 
 
 
@@ -229,6 +233,9 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 
 		# -- get text from the first selection.
 		select_text = view.substr(sel[0])
+
+		print(select_text)
+
 		xml         = compile_snippet(select_text)
 
 		write_to_snipboard(xml)
