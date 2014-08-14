@@ -28,8 +28,6 @@ is_python3 = sys.version_info[0] > 2
 
 
 
-
-
 # -- Snippet
 #
 # -- A wrapper for constructing sublime-texts XML snippets
@@ -227,7 +225,7 @@ def compile_snippet (snippet):
 def write_to_snipboard (content):
 
 	fpaths = {
-		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/User/snipboard.sublime-snippet')
+		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
 	}
 
 	platform_name = sys.platform
@@ -264,10 +262,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 		select_text = view.substr(sel[0])
 
 		if select_text:
-			xml         = compile_snippet(select_text)
+			xml = compile_snippet(select_text)
 			write_to_snipboard(xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
-
-
-
