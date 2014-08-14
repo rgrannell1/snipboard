@@ -30,14 +30,6 @@ And the currently required
 The former can be quickly written, inserted by tabbing next to `$$`, and discarded after use. The latter is verbose,
 probably too verbose to be worthwhile for such a short snippet.
 
-Snipboard copies a snippet to the trigger `$$` until it is replaced. Permanent or language-specific snippets can be
-written by adding an (optional) arguments line:
-
-```
-> p * con
-console.log($1)
-```
-
 <img src="example.gif"></img>
 
 ## Installation
@@ -92,6 +84,23 @@ git clone https://github.com/rgrannell1/snipboard.git
 ## Shortcuts
 
 * Copy Selection to Snipboard: <kbd>Ctrl+Shift+c</kbd>
+
+## Flotsam
+
+By default, snipboard binds a snippet to the trigger `$$` temporarily. An optional arguments line can be used to
+customise how a snippet is stored, what language it is available for, and what tab-trigger is used.
+
+* Storage: t denotes temporary storage (default), p denotes permanent storage.
+
+* Language: the language scope the snippet is active in. For example, s.python will make a snippet
+available to python, and t.markdown to markdown.
+
+* Tab Trigger: the sequence of keys used to trigger a snippet.
+
+```
+> p * con
+console.log($1)
+```
 
 ## License
 
