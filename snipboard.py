@@ -20,15 +20,6 @@ is_python3 = sys.version_info[0] > 2
 
 
 
-
-
-
-
-
-
-
-
-
 # -- Snippet
 #
 # -- A wrapper for constructing sublime-texts XML snippets
@@ -85,6 +76,10 @@ def Snippet (content, trigger = None, scope = None):
 
 			return template.format(content)
 
+
+
+
+
 # -- parse_args
 #
 # -- parse the snippets argument line.
@@ -128,9 +123,7 @@ def parse_args (line):
 
 def compile_args (args):
 
-	language = args['language']
-	storage  = args['storage']
-	trigger  = args['trigger']
+	language, storage, trigger = args['language'], args['storage'], args['trigger']
 
 	# -- compile s.lang -> source.lang,
 	# -- compile t.lang -> text   .lang
@@ -211,6 +204,8 @@ def compile_body (body):
 
 
 
+
+
 # -- compile_snippet
 #
 # -- compile a snipboard snippet into an XML sublime text snippet.
@@ -281,7 +276,9 @@ def write_to_snipboard (args, content):
 	# -- check that the snippet directory actually exists.
 
 	if not os.path.isdir(dpaths[platform_name]):
-		raise IOError('-- snipboard: the file path "' + out_path + '" does not exist (platform ' + platform_name + ')')
+
+		raise IOError('-- snipboard: the file path "' + out_path + \
+			'" does not exist (platform ' + platform_name + ')')
 
 	out_path = dpaths[platform_name] + snippet_name + '.sublime-snippet'
 
@@ -323,4 +320,3 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 			write_to_snipboard(args, xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
-
