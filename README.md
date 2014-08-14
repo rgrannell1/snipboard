@@ -1,38 +1,42 @@
 Snipboard v0.1.0
 ================
 
-Snipboard adds light snippets to Sublime Text.
+Snipboard adds lightweight snippets to Sublime Text.
 
-Sublime Text currently has snippets, but they several drawbacks:
+Sublime Text currently supports text snippets, but they several drawbacks:
 
-* You have to leave your code to write a snippet.
+* You have to leave your code, write the snippet, and return to your code.
 * You have to write a lot of XML boilerplate.
-* Snippets are stored permenantly, discouraging one-off snippets.
+* Snippets are stored permanently, discouraging one-off snippets.
 
 Tools with overhead are used sparingly next to immediate tools, so snippets are used less often than copy-paste and
 multi-select when writing repetitive code.
 
-Snipboard makes snippets as light and immediate as possible.
-
+Snipboard makes snippets as light and immediate as possible. Compare the following to two examples:
 
 ```bash
-short snippet no. $1
+print($1)
 ```
 
-Compared to
+And the currently required
 
 ```xml
 <snippet>
-	<content><![CDATA['short snippet no. $1']]></content>
+	<content><![CDATA[print($1)]]></content>
 	<tabTrigger>$$</tabTrigger>
 </snippet>
 ```
 
+The former can be quickly written, inserted by tabbing next to `$$`, and discarded after use. The latter is verbose,
+probably too verbose to be worthwhile for such a short snippet.
 
+Snipboard copies a snippet to the trigger `$$` until it is replaced. Permanent or language-specific snippets can be
+written by adding an (optional) arguments line:
 
-
-
-
+```
+> p * con
+console.log($1)
+```
 
 <img src="example.gif"></img>
 
