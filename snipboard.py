@@ -204,15 +204,22 @@ def compile_snippet (snippet):
 		args = compile_args(parse_args(snippet_args))
 		body = compile_body(snippet_body)
 
-		return Snippet(body, args['trigger'], args['language'])
+		return args, Snippet(body, args['trigger'], args['language'])
 
 	else:
 		# -- snippet does not include additional arguments; use defaults.
 
 		snippet_body = snippet
+
+		args         = {
+			"storage":  't',
+			"language": '*',
+			"trigger":  '$$'
+		}
+
 		body         = compile_body(snippet_body)
 
-		return Snippet(body)
+		return args, Snippet(body)
 
 
 
@@ -222,7 +229,7 @@ def compile_snippet (snippet):
 #
 # -- write the sublime text snippet to a file.
 
-def write_to_snipboard (content):
+def write_to_snipboard (args, content):
 
 	fpaths = {
 		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
@@ -262,7 +269,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 		select_text = view.substr(sel[0])
 
 		if select_text:
-			xml = compile_snippet(select_text)
-			write_to_snipboard(xml)
+			args, xml = compile_snippet(select_text)
+			write_to_snipboard(args, xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
