@@ -12,13 +12,13 @@ Sublime Text currently supports text snippets, but they several drawbacks:
 Tools with overhead are used sparingly next to immediate tools, so snippets are used less often than copy-paste and
 multi-select when writing repetitive code.
 
-Snipboard makes snippets as light and immediate as possible. Compare the following to two examples:
+Snipboard makes snippets as light and immediate as possible. Compare:
 
 ```bash
 print($1)
 ```
 
-And the currently required
+versus the currently required
 
 ```xml
 <snippet>
