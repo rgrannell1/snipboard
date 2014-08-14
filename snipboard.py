@@ -193,7 +193,9 @@ def compile_body (body):
 
 	for shorthand, longhand in env_vars:
 		# -- use random bits for swapping, to
-		# -- avoid
+		# -- avoid serial substitions, as in
+		# -- $l -> $line -> $linenum.
+		# -- using a swap variable guarantees only a single substitution occurs.
 
 		_         = str(random.getrandbits(128))
 
