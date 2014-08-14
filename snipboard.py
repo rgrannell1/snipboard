@@ -4,6 +4,7 @@ import os
 import sublime
 import sublime_plugin
 import re
+import random
 import sys
 
 
@@ -234,20 +235,36 @@ def write_to_snipboard (args, content):
 	platform_name = sys.platform
 
 	if args['storage'] is 't':
-		# -- store temporarily.
+		# -- store snippet temporarily.
 
 		fpaths = {
-			'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
+			'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/')
 		}
-		out_path      = fpaths[platform_name]
+
+		snippet_name = 'snipboard'
 
 	elif args['storage'] is 'p':
-		# -- store permanently.
+		# -- store permanently, to user-snippets.
 
-		pass
+		fpaths = {
+			'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/User/')
+		}
+
+		# -- 50% chance of collision at 77,163 snippets.
+		# -- change eventually to something better.
+		snippet_name = 'snipboard-snippet-' + str(random.getrandbits(32))
 
 	else:
 		raise KeyError("-- snipboard: internal error in 'write_to_snipboard'")
+
+	# -- check that the snippet directory actually exists.
+
+	if not os.path.isdir(fpaths[platform_name]):
+		raise IOError('-- snipboard: the file path "' + out_path + '" does not exist (platform ' + platform_name + ')')
+
+	out_path = fpaths[platform_name] + snippet_name + '.sublime-snippet'
+
+	# -- try write the snippet to a file.
 
 	try:
 		file = open(out_path, "w")
