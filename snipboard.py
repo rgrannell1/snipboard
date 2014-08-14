@@ -261,9 +261,7 @@ def write_to_snipboard (args, content):
 
 		dpaths = {
 			'linux' : os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/'),
-			'darwin': os.path.expanduser('~/Library/Application\ Support/Sublime\ Text\ 2/Packages/snipboard'),
-			'win32' : os.path.expanduser('%AppData%\Sublime Text 3\Packages\snipboard'),
-			'win64' : os.path.expanduser('%AppData%\Sublime Text 3\Packages\snipboard')
+			'darwin': os.path.expanduser('~/Library/Application\ Support/Sublime\ Text\ 2/Packages/snipboard')
 		}
 
 		snippet_name = 'snipboard'
@@ -273,9 +271,7 @@ def write_to_snipboard (args, content):
 
 		dpaths = {
 			'linux' : os.path.expanduser('~/.config/sublime-text-3/Packages/User/'),
-			'darwin': os.path.expanduser('~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/'),
-			'win32' : os.path.expanduser('%AppData%\Sublime Text 3\Packages\User'),
-			'win64' : os.path.expanduser('%AppData%\Sublime Text 3\Packages\User')
+			'darwin': os.path.expanduser('~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/')
 		}
 
 		# -- 50% chance of collision at 77,163 snippets.
