@@ -231,18 +231,30 @@ def compile_snippet (snippet):
 
 def write_to_snipboard (args, content):
 
-	fpaths = {
-		'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
-	}
-
 	platform_name = sys.platform
 
-	try:
-		file = open(fpaths[platform_name], "w")
-	except IOError:
-		raise IOError('-- snipboard: could not open ' + fpaths[platform_name])
+	if args['storage'] is 't':
+		# -- store temporarily.
+
+		fpaths = {
+			'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/snipboard.sublime-snippet')
+		}
+		out_path      = fpaths[platform_name]
+
+	elif args['storage'] is 'p':
+		# -- store permanently.
+
+		pass
+
 	else:
-		print('-- snipboard: writing to ' + fpaths[platform_name])
+		raise KeyError("-- snipboard: internal error in 'write_to_snipboard'")
+
+	try:
+		file = open(out_path, "w")
+	except IOError:
+		raise IOError('-- snipboard: could not open ' + out_path)
+	else:
+		print('-- snipboard: writing to ' + out_path)
 
 		file.write(content)
 		file.close()
