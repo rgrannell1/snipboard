@@ -85,18 +85,6 @@ git clone https://github.com/rgrannell1/snipboard.git
 
 * Copy Selection to Snipboard: <kbd>Ctrl+Shift+c</kbd>
 
-## Flotsam
-
-By default, snipboard binds a snippet to the trigger `$$` temporarily. An optional arguments line can be used to
-customise how a snippet is stored, what language it is available for, and what tab-trigger is used.
-
-* Storage: t denotes temporary storage (default), p denotes permanent storage.
-
-* Language: the language scope the snippet is active in. For example, s.python will make a snippet
-available to python, and t.markdown to markdown.
-
-* Tab Trigger: the sequence of keys used to trigger a snippet.
-
 ```
 > p * con
 console.log($1)
