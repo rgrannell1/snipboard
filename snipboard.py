@@ -153,26 +153,29 @@ def compile_args (args):
 # -- shorthand replacements for existing sublime-text
 # -- snippets.
 
-constants = (
-	['$s',  '$SELECTION'],
-	['$l',  '$TM_CURRENT_LINE'],
-	['$w',  '$TM_CURRENT_WORD'],
-	['$fn', '$TM_FILENAME'],
-	['$fp', '$TM_FILEPATH'],
-	['$li', '$TM_LINE_INDEX'],
-	['$ln', '$TM_LINE_NUMBER'],
-	['$st', '$TM_SOFT_TABS'],
-	['$ts', '$TM_TAB_SIZE'],
+env_vars = (
+	# -- replace longer patterns first, as
+	# -- $l will override $li.
 
-	['$text',     '$SELECTION'],
-	['$line',     '$TM_CURRENT_LINE'],
-	['$word',     '$TM_CURRENT_WORD'],
 	['$filename', '$TM_FILENAME'],
 	['$filepath', '$TM_FILEPATH'],
 	['$lineind',  '$TM_LINE_INDEX'],
 	['$linenum',  '$TM_LINE_NUMBER'],
 	['$softtab',  '$TM_SOFT_TABS'],
 	['$tabsize',  '$TM_TAB_SIZE'],
+	['$text',     '$SELECTION'],
+	['$line',     '$TM_CURRENT_LINE'],
+	['$word',     '$TM_CURRENT_WORD'],
+
+	['$li', '$TM_LINE_INDEX'],
+	['$ln', '$TM_LINE_NUMBER'],
+	['$st', '$TM_SOFT_TABS'],
+	['$ts', '$TM_TAB_SIZE'],
+	['$fn', '$TM_FILENAME'],
+	['$fp', '$TM_FILEPATH'],
+	['$s',  '$SELECTION'],
+	['$l',  '$TM_CURRENT_LINE'],
+	['$w',  '$TM_CURRENT_WORD']
 )
 
 
@@ -181,12 +184,28 @@ constants = (
 
 # -- compile_body
 #
-# -- compile .
+# -- replace any shorthand environmental variables with
+# -- the required longer versions.
 
 def compile_body (body):
+
+	swap_vars = []
+
+	for shorthand, longhand in env_vars:
+		# -- use random bits for swapping, to
+		# -- avoid
+
+		_         = str(random.getrandbits(128))
+
+		body      = body.replace(shorthand, _)
+		swap_vars = swap_vars + [[_, longhand]]
+
+	for _, longhand in swap_vars:
+		# -- replace the temporary variables with the longhands.
+
+		body      = body.replace(_, longhand)
+
 	return body
-
-
 
 
 
@@ -237,7 +256,7 @@ def write_to_snipboard (args, content):
 	if args['storage'] is 't':
 		# -- store snippet temporarily.
 
-		fpaths = {
+		dpaths = {
 			'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/snipboard/')
 		}
 
@@ -246,7 +265,7 @@ def write_to_snipboard (args, content):
 	elif args['storage'] is 'p':
 		# -- store permanently, to user-snippets.
 
-		fpaths = {
+		dpaths = {
 			'linux': os.path.expanduser('~/.config/sublime-text-3/Packages/User/')
 		}
 
@@ -259,10 +278,10 @@ def write_to_snipboard (args, content):
 
 	# -- check that the snippet directory actually exists.
 
-	if not os.path.isdir(fpaths[platform_name]):
+	if not os.path.isdir(dpaths[platform_name]):
 		raise IOError('-- snipboard: the file path "' + out_path + '" does not exist (platform ' + platform_name + ')')
 
-	out_path = fpaths[platform_name] + snippet_name + '.sublime-snippet'
+	out_path = dpaths[platform_name] + snippet_name + '.sublime-snippet'
 
 	# -- try write the snippet to a file.
 
@@ -294,7 +313,7 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 		view   = window.active_view()
 		sel    = view.sel()
 
-		# -- get text from the first selection.
+		# -- get text from the first selection when multiselecting.
 		select_text = view.substr(sel[0])
 
 		if select_text:
@@ -302,3 +321,4 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 			write_to_snipboard(args, xml)
 		else:
 			raise SyntaxError('-- snipboard: cannot create a snippet from no input.')
+
