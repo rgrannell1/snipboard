@@ -271,8 +271,3 @@ class SnipboardCommand (sublime_plugin.WindowCommand):
 
 
 
-
-
-for ($1 in 1:$2) {
-	print($1)
-}
